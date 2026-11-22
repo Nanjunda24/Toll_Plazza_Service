@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: toll-plaza-service
+  datasource:
+    url: jdbc:h2:mem:tolldb;DB_CLOSE_DELAY=-1
+    username: root
+    password: ${DB_PASSWORD:}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    open-in-view: false
+  h2:
+    console:
+      enabled: false
+  cache:
+    type: caffeine
+    cache-names: tollPlazas,geocode
+    caffeine:
+      spec: maximumSize=2000,expireAfterWrite=24h
+
+toll:
+  geocoding:
+    base-url: https://nominatim.openstreetmap.org
+    user-agent: toll-plaza-service/1.0 (assignment project)
+    timeout-seconds: 10
+  routing:
+    base-url: https://router.project-osrm.org
+    timeout-seconds: 30
+  matching:
+    max-distance-meters: 300
+  csv:
+    location: classpath:data/toll_plaza_india.csv
+    load-on-startup: true
+
+server:
+  port: 8080
